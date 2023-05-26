@@ -12,29 +12,29 @@ c = conn.cursor
 cursor = conn.cursor()
 
 rotationsTotal = 0
-rotationsTemp = 0
+rotationsNew = 0
 q = queue.Queue()
 
 for i in range (480):
     q.put(0)
 
 def hallPulse(channel):
-    global rotationsTemp
-    rotationsTemp += 1
+    global rotationsNew
+    rotationsNew += 1
 
-# Causes the countPulse() function to run when a pulse is sent into pin 13
+# Causes the hallPulse() function to run when a pulse is sent into pin 13
 GPIO.add_event_detect(HALL_EFFECT_GPIO, GPIO.FALLING, callback=hallPulse)
 
 while True:
-    q.put(rotationsTemp)
+    q.put(rotationsNew)
     rotationsDumped = q.get()
     
-    rotationsTotal = rotationsTotal + rotationsTemp - rotationsDumped
+    rotationsTotal = rotationsTotal + rotationsNew - rotationsDumped
     
     rotationsTemp = 0
     
-    rps = 0.42 * rotationsTotal
-    mph = 1.38 * rps
+    rps = 0.42 * rotationsTotal # Equivilant to dividing the total rotations by 2.4 seconds
+    mph = 1.38 * rps # Constant derivation in System Specification
     #mph = round(mph, 5)
     
     conn.execute("DELETE FROM speed")
