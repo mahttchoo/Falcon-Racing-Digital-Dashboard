@@ -31,7 +31,7 @@ while True:
     
     rotationsTotal = rotationsTotal + rotationsNew - rotationsDumped
     
-    rotationsTemp = 0
+    rotationsNew = 0
     
     rps = 0.42 * rotationsTotal # Equivilant to dividing the total rotations by 2.4 seconds
     mph = 1.38 * rps # Constant derivation in System Specification
